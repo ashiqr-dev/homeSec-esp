@@ -3,8 +3,6 @@
 
 #include <string.h>
 
-#include "secrets.h" // contains SSID and password
-
 #include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"
 #include "freertos/task.h"
@@ -28,6 +26,10 @@ static EventGroupHandle_t s_wifi_event_group;
 #define WIFI_CONNECTED_BIT BIT0
 // We failed to connect after the maximun amount of retries.
 #define WIFI_FAIL_BIT BIT1
+
+// Edit via project configuration menu or change below entries to strings.
+#define WIFI_SSID CONFIG_WIFI_SSID
+#define WIFI_PASS CONFIG_WIFI_PASS
 
 static const char *TAG = "wifi_sta";
 
