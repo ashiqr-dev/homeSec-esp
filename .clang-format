@@ -1,0 +1,20 @@
+BasedOnStyle: LLVM
+
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+BraceWrapping:
+  AfterFunction: true
+
+BreakBeforeBraces: Custom
+
+BinPackArguments: false
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: true
+
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+SpacesInParentheses: false
+ReflowComments: false
