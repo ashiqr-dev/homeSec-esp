@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Ashiq Renju
+// SPDX-License-Identifier: MIT
+
 #include <string.h>
 
 #include "secrets.h" // contains SSID and password
