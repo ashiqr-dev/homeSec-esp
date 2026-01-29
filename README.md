@@ -41,11 +41,14 @@ https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/
     ```
 2. Open the project in the VS Code Dev Container (`F1` -> `Reopen in Container`).
 
-3. In the terminal, run `idf.py menuconfig`.
+3. To edit Wi-Fi settings:
+    ```sh
+    idf.py menuconfig
+    ```
 
 4. Scroll to and open `Wi-Fi Configuration`.
 
-5. Set Wi-Fi configuration and save it.
+5. Edit Wi-Fi configuration and save it.
 
 6. To build and flash, run 
     ```sh
