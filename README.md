@@ -57,6 +57,8 @@ https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/
     idf.py monitor
     ```
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Issues
 
 See the [open issues](https://github.com/ashiqr-dev/homeSec-esp/issues) for a full list of proposed features (and known issues).
