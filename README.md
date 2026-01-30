@@ -41,6 +41,15 @@ https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/
     ```
 2. Open the project in the VS Code Dev Container (`F1` -> `Reopen in Container`).
 
+
+    > **Optional: IntelliSense**
+    >
+    > For VS Code IntelliSense to work, it needs its configuration files.
+    > This will **not** affect the building and flashing of the firmware.
+    > To generate the config files, run the following command:
+    >
+    > `F1` -> `ESP-IDF: Add VS Code Configuration Folder`
+
 3. To edit Wi-Fi settings:
     ```sh
     idf.py menuconfig
