@@ -11,10 +11,15 @@ BreakBeforeBraces: Custom
 
 BinPackArguments: false
 BinPackParameters: false
+
 AllowAllParametersOfDeclarationOnNextLine: true
+AllowAllArgumentsOnNextLine: false
 
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+
+ColumnLimit: 0
 
 SpacesInParentheses: false
 ReflowComments: false
