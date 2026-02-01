@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Ashiq Renju
+// SPDX-License-Identifier: MIT
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"
 

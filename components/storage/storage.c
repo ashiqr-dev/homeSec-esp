@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Ashiq Renju
+// SPDX-License-Identifier: MIT
+
 #include "nvs_flash.h"
 
 #include "esp_check.h"
