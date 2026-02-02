@@ -3,14 +3,6 @@
 
 #include "sdkconfig.h"
 
-#if !defined(CONFIG_WIFI_SSID) || !defined(CONFIG_WIFI_PASS)
-#error "ERROR: Wi-Fi credentials not set, run `idf.py menuconfig` to set them."
-#endif
-
-#ifndef CONFIG_BOT_TOKEN
-#error "ERROR: Telegram Bot Token not set, run `idf.py menuconfig` to set them."
-#endif
-
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
