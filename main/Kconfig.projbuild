@@ -1,10 +1,10 @@
-menu "Wi-Fi Configuration"
+menu "Program Configuration"
 
     config WIFI_SSID
-        string "WiFi SSID"
-        default "your_ssid"
+        string "Wi-Fi SSID"
     config WIFI_PASS
-        string "WiFi Password"
-        default "your_password"
-
+        string "Wi-Fi Password"
+    config BOT_TOKEN
+        string "Telegram Bot Token"
+        
 endmenu
