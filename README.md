@@ -4,7 +4,7 @@
 <h1 align="center">HomeSec-esp</h1>
 
   <p align="center">
-    An ESP32 project that currently connects to Wi-Fi. More features are coming soon.
+    An ESP32 project that can receive and act upon inputs from Telegram.
   </p>
 
 <!-- ABOUT THE PROJECT -->
@@ -12,17 +12,27 @@
 
 This project is an ESP32-based home security system built using the ESP-IDF framework.
 
-At its current stage, the firmware just connects to Wi-Fi.
+At its current stage, the firmware can recieve messages from Telegram and can act upon those changes.
 
 The goal of this project is to gradually evolve into a full-featured home security system.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- FEATURES -->
+## Features
+
+- **Telegram Integration**: Receive and respond to Telegram messages
+- **WiFi Connectivity**: Connect to WiFi networks for remote communication
+- **Persistent Storage**: Store configuration and state data in NVS
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- PREREQUISITES -->
 ## Prerequisites
 
- - Python 3.8+ (Required by ESP-IDF)
- - Git
+ - VS Code
+ - ESP-IDF
+ - Docker
 ### Install ESP-IDF
 
 Follow the official Espressif installation guide:
@@ -50,14 +60,14 @@ https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/
     >
     > `F1` -> `ESP-IDF: Add VS Code Configuration Folder`
 
-3. To edit Wi-Fi settings:
+3. To edit Application settings:
     ```sh
     idf.py menuconfig
     ```
 
-4. Scroll to and open `Wi-Fi Configuration`.
+4. Scroll to and open `Application Configuration`.
 
-5. Edit Wi-Fi configuration and save it.
+5. Add your configuration and save it.
 
 6. To build and flash, run 
     ```sh

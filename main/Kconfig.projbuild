@@ -1,4 +1,4 @@
-menu "Program Configuration"
+menu "Application Configuration"
 
     config WIFI_SSID
         string "Wi-Fi SSID"
