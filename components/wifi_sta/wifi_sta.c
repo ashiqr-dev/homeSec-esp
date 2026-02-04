@@ -13,6 +13,7 @@
 #include "wifi_sta.h"
 
 #define WIFI_MAXIMUM_RETRY 5
+#define WIFI_MAX_WAIT 10000 // 10 secs
 
 static EventGroupHandle_t s_wifi_event_group;
 
@@ -31,17 +32,17 @@ static esp_err_t wifi_driver_init(void);
 static esp_err_t wifi_register_event_handlers(void);
 static esp_err_t wifi_config_sta(void);
 static esp_err_t wifi_sta_start(void);
-static void wifi_wait_for_connection(void);
+static esp_err_t wifi_wait_for_connection(void);
 
 static void wifi_event_handler(void *arg,
                                esp_event_base_t event_base,
                                int32_t event_id,
                                void *event_data)
 {
+    ESP_LOGE(TAG, "wifi_event_handler() called!");
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
         esp_wifi_connect();
-    } else if (event_base == WIFI_EVENT &&
-               event_id == WIFI_EVENT_STA_DISCONNECTED) {
+    } else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
         if (s_retry_num < WIFI_MAXIMUM_RETRY) {
             esp_wifi_connect();
             s_retry_num++;
@@ -66,8 +67,8 @@ esp_err_t wifi_init_sta(void)
     ESP_RETURN_ON_ERROR(wifi_register_event_handlers(), TAG, "Event handlers registration failed");
     ESP_RETURN_ON_ERROR(wifi_config_sta(),              TAG, "Wi-Fi config failed");
     ESP_RETURN_ON_ERROR(wifi_sta_start(),               TAG, "Wi-Fi start failed");
-    
-    wifi_wait_for_connection();
+
+    ESP_RETURN_ON_ERROR(wifi_wait_for_connection(),     TAG, "Wi-Fi connect failed");
 
     ESP_LOGI(TAG, "wifi_init_sta() finished");
 
@@ -90,12 +91,15 @@ static esp_err_t wifi_init_event_group(void)
                         "Event loop default creation failed");
     esp_netif_create_default_wifi_sta();
 
+    ESP_LOGW(TAG, "wifi_init_event_group() done");
     return ESP_OK;
 }
 
 static esp_err_t wifi_driver_init(void)
 {
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+
+    ESP_LOGW(TAG, "wifi_driver_init() done");
     return esp_wifi_init(&cfg);
 }
 
@@ -117,6 +121,8 @@ static esp_err_t wifi_register_event_handlers(void)
                                                             &instance_got_ip),
                         TAG,
                         "IP event handler registration failed");
+
+    ESP_LOGW(TAG, "wifi_register_event_handlers() done");
     return ESP_OK;
 }
 
@@ -127,6 +133,13 @@ static esp_err_t wifi_config_sta(void)
                 .password = WIFI_PASS,
                 .threshold.authmode = WIFI_AUTH_WPA2_PSK}};
 
+    if (strlen(WIFI_SSID) == 0) {
+        return ESP_ERR_WIFI_SSID;
+    }
+    if (strlen(WIFI_PASS) < 8) {
+        wifi_config.sta.threshold.authmode = WIFI_AUTH_OPEN;
+    }
+
     ESP_RETURN_ON_ERROR(esp_wifi_set_mode(WIFI_MODE_STA),
                         TAG,
                         "Set STA mode failed");
@@ -134,27 +147,33 @@ static esp_err_t wifi_config_sta(void)
     ESP_RETURN_ON_ERROR(esp_wifi_set_config(WIFI_IF_STA, &wifi_config),
                         TAG,
                         "Wi-Fi config failed");
+    ESP_LOGW(TAG, "wifi_config_sta() done");
     return ESP_OK;
 }
 
 static esp_err_t wifi_sta_start(void)
 {
-    return esp_wifi_start();
+    ESP_RETURN_ON_ERROR(esp_wifi_start(), TAG, "Wi-Fi start failed");
+    ESP_LOGW(TAG, "wifi_sta_start() done");
+    return ESP_OK;
 }
 
-static void wifi_wait_for_connection(void)
+static esp_err_t wifi_wait_for_connection(void)
 {
     EventBits_t bits = xEventGroupWaitBits(s_wifi_event_group,
                                            WIFI_CONNECTED_BIT | WIFI_FAIL_BIT,
                                            pdFALSE,
                                            pdFALSE,
-                                           portMAX_DELAY);
+                                           pdMS_TO_TICKS(WIFI_MAX_WAIT));
 
     if (bits & WIFI_CONNECTED_BIT) {
         ESP_LOGI(TAG, "Connected to AP SSID: %s", WIFI_SSID);
+        return ESP_OK;
     } else if (bits & WIFI_FAIL_BIT) {
         ESP_LOGE(TAG, "Failed to connect to SSID: %s", WIFI_SSID);
+        return ESP_FAIL;
     } else {
         ESP_LOGE(TAG, "UNEXPECTED EVENT");
+        return ESP_FAIL;
     }
 }
