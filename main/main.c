@@ -38,7 +38,7 @@ void app_main(void)
     ESP_ERROR_CHECK(storage_init());
     ESP_ERROR_CHECK(wifi_init_sta());
 
-    telegram_bot_init(on_telegram_message); // Register the event handler
+    ESP_ERROR_CHECK(telegram_bot_init(on_telegram_message)); // Register the event handler
     xTaskCreate(telegram_bot_task,
                 "telegram_bot_task",
                 8192,

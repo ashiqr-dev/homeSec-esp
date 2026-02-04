@@ -29,10 +29,15 @@ static void process_updates(const char *json_str);
 
 static telegram_message_callback_t message_callback = NULL;
 
-void telegram_bot_init(telegram_message_callback_t callback)
+esp_err_t telegram_bot_init(telegram_message_callback_t callback)
 {
+    if (callback == NULL) {
+        ESP_LOGE(TAG, "Callback cannot be NULL");
+        return ESP_ERR_INVALID_ARG;
+    }
     message_callback = callback;
     ESP_LOGI(TAG, "Telegram bot initialized");
+    return ESP_OK;
 }
 
 static esp_err_t http_event_handler(esp_http_client_event_handle_t evt)
