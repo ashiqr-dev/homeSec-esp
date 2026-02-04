@@ -142,6 +142,44 @@ esp_err_t telegram_bot_send_message(int64_t chat_id, const char *text)
     return err;
 }
 
+esp_err_t telegram_bot_check_status(void)
+{
+    char url[256];
+    snprintf(url,
+             sizeof(url),
+             "https://api.telegram.org/bot%s/getMe",
+             BOT_TOKEN);
+
+    ESP_LOGI(TAG, "Requesting: %s", url);
+
+    esp_http_client_config_t config = {
+        .url = url,
+        .event_handler = http_event_handler,
+        .cert_pem = (const char *)ca_pem_start,
+        .transport_type = HTTP_TRANSPORT_OVER_SSL,
+        .timeout_ms = 10000,
+    };
+
+    esp_http_client_handle_t client = esp_http_client_init(&config);
+    esp_err_t err = esp_http_client_perform(client);
+
+    if (err == ESP_OK) {
+        int16_t get_status = esp_http_client_get_status_code(client);
+        ESP_LOGI(TAG, "HTTPS GET Status = %d, content_length = %d", get_status, esp_http_client_get_content_length(client));
+        if (get_status == 404) {
+            ESP_LOGE(TAG, "Please enter a valid Telegram bot token!");
+            return ESP_FAIL;
+        }
+    } else {
+        ESP_LOGE(TAG, "HTTPS GET request failed: %s", esp_err_to_name(err));
+        esp_http_client_cleanup(client);
+        return ESP_FAIL;
+    }
+
+    esp_http_client_cleanup(client);
+    return ESP_OK;
+}
+
 /************************************************
 ** GET request helpers
 *************************************************/
@@ -194,7 +232,7 @@ static void process_updates(const char *json_str)
 
     cJSON *result = cJSON_GetObjectItem(json, "result");
     if (result == NULL || !cJSON_IsArray(result)) {
-        ESP_LOGW(TAG, "No result array in response");
+        ESP_LOGI(TAG, "No result array in response");
         cJSON_Delete(json);
         return;
     }

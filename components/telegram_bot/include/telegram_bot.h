@@ -21,6 +21,13 @@ typedef void (*telegram_message_callback_t)(int64_t chat_id, const char *text, c
 esp_err_t telegram_bot_init(telegram_message_callback_t callback);
 
 /**
+ * @brief Check whether the bot is configured and ready.
+ *
+ * @return ESP_OK if ready, otherwise an error code.
+ */
+esp_err_t telegram_bot_check_status(void);
+
+/**
  * @brief Fetch updates from Telegram API
  * @return ESP_OK on success, error code otherwise
  */
@@ -32,5 +39,4 @@ esp_err_t telegram_bot_get_updates(void);
  * @param message The message text to send
  * @return ESP_OK on success, error code otherwise
  */
-esp_err_t telegram_bot_send_message(int64_t chat_id, const char *message);
 esp_err_t telegram_bot_send_message(int64_t chat_id, const char *text);
