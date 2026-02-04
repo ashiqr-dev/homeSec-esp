@@ -2,9 +2,12 @@ menu "Application Configuration"
 
     config WIFI_SSID
         string "Wi-Fi SSID"
+        default "your_ssid_here"
     config WIFI_PASS
         string "Wi-Fi Password"
+        default "your_pass_here"
     config BOT_TOKEN
         string "Telegram Bot Token"
+        default "your_token_here"
         
 endmenu
